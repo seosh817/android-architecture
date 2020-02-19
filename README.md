@@ -1,7 +1,7 @@
 # android-architecture
 
 ##### Refactoring my MVC Application Using the MVP, MVVM Design Pattern
-##### 모든 스텝에서 Repository Pattern, retrofit, room은 하였습니다.
+##### 모든 스텝에서 Repository Pattern, retrofit, room은 사용함
 <br>
 
 ### Step-1
