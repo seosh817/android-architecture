@@ -15,7 +15,6 @@
 ##### Model - View - Presenter (Rxjava)
 
 ### Step-3
-
 ------------
 #####  Model - View - ViewModel (Rxjava, Databinding)
 
@@ -26,3 +25,11 @@
 ### Step-5
 ------------
 #####  Model - View - ViewModel (Rxjava, Databinding, AAC ViewModel, AAC LiveData, Koin)
+
+### Step-6
+------------
+#####  Model - View - ViewModel (Rxjava, Databinding, AAC ViewModel, AAC LiveData, Koin, Navigation Component)
+
+### Step-6
+------------
+#####  Model - View - Presenter (Clean Architecture)
