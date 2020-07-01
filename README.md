@@ -26,6 +26,6 @@
 ------------
 #####  Model - View - ViewModel (Rxjava, Databinding, AAC ViewModel, AAC LiveData, Koin)
 
-### Step-7
+### Step-6
 ------------
 #####  Model - View - ViewModel (Clean Architecture)
