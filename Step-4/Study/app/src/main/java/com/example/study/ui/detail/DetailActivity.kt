@@ -7,7 +7,7 @@ import com.example.study.R
 import com.example.study.databinding.ActivityDetailBinding
 
 
-class DetailActivity : AppCompatActivity(), DetailContract.View {
+class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,7 @@ class DetailActivity : AppCompatActivity(), DetailContract.View {
         }
     }
 
-    override fun showDetailView(movieUrl: String) {
+    fun showDetailView(movieUrl: String) {
         binding.wvDetail.loadUrl(movieUrl)
     }
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.study.data.model.Movie
 import com.example.study.data.repository.NaverSearchRepository
-import com.example.study.util.base.BaseViewModel
+import com.example.study.ui.base.BaseViewModel
 import com.example.study.util.extension.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
