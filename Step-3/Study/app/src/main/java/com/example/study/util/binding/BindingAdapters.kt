@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.study.data.model.Movie
+import com.example.study.data.remote.model.Movie
 import com.example.study.ui.adapter.MovieAdapter
 import com.example.study.ui.detail.DetailActivity
 

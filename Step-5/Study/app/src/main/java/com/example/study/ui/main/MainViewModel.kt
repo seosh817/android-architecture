@@ -1,14 +1,15 @@
 package com.example.study.ui.main
 
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.study.data.model.Movie
+import com.example.study.data.remote.model.Movie
 import com.example.study.data.repository.NaverSearchRepository
 import com.example.study.ui.base.BaseViewModel
-import com.example.study.util.extension.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 class MainViewModel(private val naverSearchRepository: NaverSearchRepository) : BaseViewModel() {
 
@@ -17,7 +18,6 @@ class MainViewModel(private val naverSearchRepository: NaverSearchRepository) : 
     private val _movieItems = MutableLiveData<List<Movie>>()
     val movieItems: LiveData<List<Movie>>
         get() = _movieItems
-
 
     private val _isProgressBoolean = MutableLiveData<Boolean>()
     val isProgressBoolean: LiveData<Boolean>
@@ -39,43 +39,69 @@ class MainViewModel(private val naverSearchRepository: NaverSearchRepository) : 
     val errorFailSearch: LiveData<Throwable>
         get() = _errorFailSearch
 
-    fun getMovies() {
-        val queryString: String? = _query.value
 
-        if (queryString.isNullOrBlank()) {
-            _errorQueryEmpty.value = Throwable()
-        } else {
-            compositeDisposable += (naverSearchRepository.getMovies(queryString)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe {
-                    _isProgressBoolean.value = true
-                }
-                .doAfterTerminate {
-                    _isProgressBoolean.value = false
-                    _isKeyboardBoolean.value = false
-                }
-                .subscribe({
-                    it?.let {
-                        if (it.items.isNotEmpty()) {
-                            _movieItems.value = it.items
-                        } else {
-                            //view.showErrorEmptyResult()
-                            _errorResultEmpty.value = Throwable()
-                        }
+    fun getMovies(query: String) {
+        query.let { query ->
+            if (query.isNullOrBlank()) {
+                _errorQueryEmpty.value = Throwable()
+            } else {
+                (naverSearchRepository.getMovies(query)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {
+                        showProgress()
                     }
-                }, {
-                    it.printStackTrace()
-                    _errorFailSearch.value = it
-                })
-                    )
+                    .doAfterTerminate {
+                        hideProgress()
+                        hideKeyBoard()
+                    }
+                    .doOnError {
+                        hideProgress()
+                    }
+                    .subscribe({
+                        it?.let {
+                            if (it.isNotEmpty()) {
+                                _movieItems.value = it
+                            } else {
+                                _errorResultEmpty.value = Throwable()
+                            }
+                        }
+                    }, {
+                        it.printStackTrace()
+                        _errorFailSearch.value = it
+                    })
+                        ).addTo(compositeDisposable)
+            }
         }
-
     }
 
+
     fun getRecentSearchResult() {
-        naverSearchRepository.getRecentSearchResult()?.let {
-            _movieItems.value = it
-        }
+        naverSearchRepository.getRecentMovies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showProgress()
+            }.doAfterTerminate {
+                hideProgress()
+                hideKeyBoard()
+            }
+            .subscribe({
+                _movieItems.value = it
+            }, {
+                _errorFailSearch.value = it
+            }).addTo(compositeDisposable)
+    }
+
+    private fun showProgress() {
+        _isProgressBoolean.value = true
+    }
+
+    private fun hideProgress() {
+        _isProgressBoolean.value = false
+    }
+
+    private fun hideKeyBoard() {
+        _isKeyboardBoolean.value = false
     }
 }

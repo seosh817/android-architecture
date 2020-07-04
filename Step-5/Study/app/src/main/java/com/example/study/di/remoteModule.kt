@@ -1,9 +1,9 @@
 package com.example.study.di
 
-import com.example.study.data.source.remote.NaverSearchRemoteDataSource
-import com.example.study.data.source.remote.NaverSearchRemoteDataSourceImpl
-import com.example.study.data.source.remote.network.NaverApiService
-import com.example.study.data.source.remote.network.interceptor.ApplicationInterceptor
+import com.example.study.data.remote.network.NaverApiService
+import com.example.study.data.remote.network.interceptor.ApplicationInterceptor
+import com.example.study.data.remote.source.NaverSearchRemoteDataSource
+import com.example.study.data.remote.source.NaverSearchRemoteDataSourceImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module

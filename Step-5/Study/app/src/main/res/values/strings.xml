@@ -16,4 +16,5 @@
     <string name="empty_query_message">빈칸을 입력할 수 없습니다</string>
 
     <string name="fail_search">검색을 실패하였습니다.</string>
+    <string name="show_rx_error">rx 에러 발생</string>
 </resources>

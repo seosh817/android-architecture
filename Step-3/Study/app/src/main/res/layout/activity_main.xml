@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="View"
+            type="android.view.View" />
+        <variable
+            name="activity"
+            type="com.example.study.ui.main.MainActivity" />
         <variable
             name="vm"
             type="com.example.study.ui.main.MainViewModel" />
@@ -34,7 +39,7 @@
                 android:id="@+id/btn_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> vm.getMovies()}"
+                android:onClick="@{() -> activity.getMovies()}"
                 android:text="@string/btn_search" />
         </LinearLayout>
 

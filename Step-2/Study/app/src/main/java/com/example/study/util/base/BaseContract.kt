@@ -1,6 +1,6 @@
 package com.example.study.util.base
 
-import com.example.study.data.model.Movie
+import com.example.study.data.remote.model.Movie
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable

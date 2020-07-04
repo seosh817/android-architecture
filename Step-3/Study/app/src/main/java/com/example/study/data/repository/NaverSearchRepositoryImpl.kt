@@ -1,12 +1,8 @@
 package com.example.study.data.repository
 
-import com.example.study.data.model.Movie
-import com.example.study.data.source.remote.NaverSearchRemoteDataSource
-import com.example.study.data.model.NaverSearchResponse
-import com.example.study.data.source.local.NaverSearchLocalDataSource
-import com.example.study.data.source.local.SearchResultDatabase
-import com.example.study.data.source.local.model.SearchResult
-import com.google.gson.Gson
+import com.example.study.data.remote.model.Movie
+import com.example.study.data.remote.source.NaverSearchRemoteDataSource
+import com.example.study.data.local.source.NaverSearchLocalDataSource
 import io.reactivex.Single
 
 class NaverSearchRepositoryImpl private constructor(
@@ -15,22 +11,15 @@ class NaverSearchRepositoryImpl private constructor(
 ) : NaverSearchRepository {
 
 
-    override fun getMovies(query: String): Single<NaverSearchResponse> {
-        return naverSearchRemoteDataSource.getMovies(query).doAfterSuccess {
-            addSearchResult(SearchResult(Gson().toJson(it.items)))
+    override fun getMovies(query: String): Single<List<Movie>> =
+        naverSearchRemoteDataSource.getMovies(query).flatMap { remoteMovies ->
+            naverSearchLocalDataSource.saveMovieEntity(remoteMovies)
+                .andThen(Single.just(remoteMovies))
         }
-    }
 
-    override fun addSearchResult(searchResult: SearchResult) =
-        naverSearchLocalDataSource.addSearchResult(searchResult)
+    override fun getRecentMovies(): Single<List<Movie>> =
+        naverSearchLocalDataSource.getMovies()
 
-    override fun getRecentSearchResult(): List<Movie>? {
-        var list: List<Movie>? = null
-        naverSearchLocalDataSource.getRecentSearchResult()?.let {
-            list = Gson().fromJson(it.results, Array<Movie>::class.java).asList()
-        }
-        return list
-    }
 
     companion object {
         private var instance: NaverSearchRepositoryImpl? = null

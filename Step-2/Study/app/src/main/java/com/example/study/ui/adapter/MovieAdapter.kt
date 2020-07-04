@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.study.R
-import com.example.study.data.model.Movie
+import com.example.study.data.remote.model.Movie
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 

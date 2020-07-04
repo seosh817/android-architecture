@@ -24,7 +24,7 @@
 
 ### Step-5
 ------------
-#####  Model - View - ViewModel (Rxjava, Databinding, AAC ViewModel, AAC LiveData, Koin)
+#####  Model - View - ViewModel (Rxjava, RxBinding, Databinding, AAC ViewModel, AAC LiveData, Koin)
 
 ### Step-6
 ------------

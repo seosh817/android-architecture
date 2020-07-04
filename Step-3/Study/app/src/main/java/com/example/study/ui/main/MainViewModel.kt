@@ -1,14 +1,15 @@
 package com.example.study.ui.main
 
 import androidx.databinding.ObservableField
-import com.example.study.data.model.Movie
+import com.example.study.data.remote.model.Movie
 import com.example.study.data.repository.NaverSearchRepository
-import com.example.study.util.base.BaseViewModel
+import com.example.study.ui.base.BaseViewModel
 import com.example.study.util.extension.plusAssign
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class MainViewModel(private val naverSearchRepository: NaverSearchRepository) : BaseViewModel() {
+
     var movieItems = ObservableField<List<Movie>>()
     var queryObservableField = ObservableField<String>()
     var isProgressBoolean = ObservableField<Boolean>()
@@ -35,8 +36,8 @@ class MainViewModel(private val naverSearchRepository: NaverSearchRepository) : 
                 }
                 .subscribe({
                     it?.let {
-                        if (it.items.isNotEmpty()) {
-                            movieItems.set(it.items)
+                        if (it.isNotEmpty()) {
+                            movieItems.set(it)
                         } else {
                             //view.showErrorEmptyResult()
                             errorResultEmpty.set(Throwable())
@@ -51,9 +52,15 @@ class MainViewModel(private val naverSearchRepository: NaverSearchRepository) : 
 
     }
 
-    fun getRecentSearchResult() {
-        naverSearchRepository.getRecentSearchResult()?.let {
-            movieItems.set(it)
-        }
+    fun getRecentMovies() {
+        compositeDisposable += naverSearchRepository.getRecentMovies().subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                isProgressBoolean.set(true)
+            }.subscribe({
+                movieItems.set(it)
+            }, {
+
+            })
     }
 }
